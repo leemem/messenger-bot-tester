@@ -1,0 +1,21 @@
+{
+  "name": "messenger-bot-tester",
+  "version": "1.0.0",
+  "description": "Test your messenger bot",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "typings": "lib/index",
+  "author": "Adam Juhasz",
+  "license": "MIT",
+  "dependencies": {
+    "api-check": "^7.5.5",
+    "bluebird": "^3.4.1",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "facebook-send-api": "^2.5.0",
+    "lodash": "^4.15.0",
+    "request-promise": "^4.1.1"
+  }
+}

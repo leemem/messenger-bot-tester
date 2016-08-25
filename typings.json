@@ -1,0 +1,14 @@
+{
+  "name": "messenger-bot-tester",
+  "dependencies": {
+    "bluebird": "registry:npm/bluebird#3.4.1+20160811213708",
+    "body-parser": "registry:npm/body-parser#1.15.2+20160815132839",
+    "express": "registry:npm/express#4.14.0+20160815112707",
+    "lodash": "registry:npm/lodash#4.0.0+20160723033700",
+    "request": "registry:npm/request#2.69.0+20160428223725"
+  },
+  "globalDependencies": {
+    "node": "registry:dt/node#6.0.0+20160823142437",
+    "request-promise": "registry:dt/request-promise#3.0.0+20160811111312"
+  }
+}
