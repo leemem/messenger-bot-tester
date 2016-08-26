@@ -96,7 +96,7 @@ export class DelayMessage extends Message {
         return this;
     }
     public send() {
-        console.log(`delaying ${this.delay} ms`);
+        // console.log(`delaying ${this.delay} ms`);
         return Promise.delay(this.delay);
     }
 }

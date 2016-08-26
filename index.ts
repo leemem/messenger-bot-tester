@@ -36,7 +36,7 @@ export default class Tester {
         this.expressApp = express();
         this.expressApp.use(bodyParser.json());
         this.expressApp.get('/v2.6/:id', (req: express.Request, res) => {
-            console.log('requesting', (<any>req.params).id);
+            // console.log('requesting', (<any>req.params).id);
             const user: sendTypes.FacebookUser = {
                 first_name: 'user',
                 last_name: 'last',
@@ -48,7 +48,7 @@ export default class Tester {
             res.send(user);
         })
         this.expressApp.get('/v2.6/me/thread_settings', (req: express.Request, res) => {
-            console.log('thread_settings');
+            // console.log('thread_settings');
             res.send({});
         })
         this.expressApp.post('/v2.6/me/messages', this.messageResponse.bind(this));
@@ -77,20 +77,20 @@ export default class Tester {
         if (currentStep instanceof Response) {
             const _savedThis = this;
             this.stepMapArray[parsedResponse.recipient].shift();
-            console.log('checking the response...');
+            // console.log('checking the response...');
             this.promise = this.promise.then(() => new Promise((resolve) => {
-                console.log(`create expect promise for ${(<any>currentStep).constructor.name}`);
+                // console.log(`create expect promise for ${(<any>currentStep).constructor.name}`);
                 _savedThis.resolveFunction = resolve;
                 // console.log('currentStep', currentStep);
 
-                console.log('checking type..');
+                // console.log('checking type..');
                 if (currentStep.type !== parsedResponse.type) {
                     return _savedThis.rejectFunction(new Error(`Script does not match response type, got '${ResponseTypes[parsedResponse.type]}' but expected '${ResponseTypes[currentStep.type]}'`));
                 }
                 
-                console.log('checking contents..');
+                // console.log('checking contents..');
                 if (currentStep.check(realResponse)) {
-                    console.log('PERFECT');
+                    // console.log('PERFECT');
                     res.sendStatus(200);
                     return resolve();
                 }
@@ -100,7 +100,7 @@ export default class Tester {
 
             }))
                 .then(() => {
-                    console.log('running next step...');
+                    // console.log('running next step...');
                     return _savedThis.runNextStep(parsedResponse.recipient)
                 });
         } else {
@@ -116,29 +116,29 @@ export default class Tester {
             nextStep = this.stepMapArray[recipient].shift();
 
             if (typeof nextStep === 'undefined') {
-                console.log('end of array');
+                // console.log('end of array');
                 this.promise = this.promise.then(() => {
-                    console.log('clear');
+                    // console.log('clear');
                     _savedThis.messagesCallbackFunction = null;
                     _savedThis.finalResolveFunction();
                 });
                 return null;
             }
-            console.log('working on:', (<any>nextStep).constructor.name);
+            // console.log('working on:', (<any>nextStep).constructor.name);
 
             if (nextStep instanceof Response) {
                 const localStep: Response = nextStep;
-                console.log(`expecting a ${(<any>localStep).constructor.name}`);
+                // console.log(`expecting a ${(<any>localStep).constructor.name}`);
                 this.stepMapArray[recipient].unshift(nextStep);
                 break;
             } else if (nextStep instanceof Message) {
                 const localStep: Message = nextStep;
                 this.promise = this.promise.then(() => {
-                    console.log('sending', (<any>localStep).constructor.name);
+                    // console.log('sending', (<any>localStep).constructor.name);
                     return localStep.send(this.host);
                 });
             } else {
-                console.log(nextStep);
+                // console.log(nextStep);
                 this.promise = this.promise.then(() => Promise.reject(new Error('corrupt script')));
             }
         } while (nextStep instanceof Message)
@@ -197,13 +197,13 @@ export default class Tester {
             .then(() => new Promise((resolve, reject) => {
                 _savedThis.promise = Promise.resolve()
                     .catch((err) => {
-                        console.log('err in script run', err);
+                        // console.log('err in script run', err);
                     });
                 _savedThis.finalResolveFunction = resolve;
                 _savedThis.rejectFunction = reject;
                 _savedThis.runNextStep(script.userID);
             })).finally(() => {
-                console.log('script done');
+                // console.log('script done');
             })        
     }
 }
