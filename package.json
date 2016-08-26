@@ -1,6 +1,6 @@
 {
   "name": "messenger-bot-tester",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Test your messenger bot",
   "main": "lib/index.js",
   "scripts": {
@@ -8,6 +8,7 @@
     "test": "mocha ./test-build",
     "posttest": "rm -rf ./test-build"
   },
+  "repository": "fyndme/messenger-bot-tester",
   "typings": "lib/index",
   "author": "Adam Juhasz",
   "license": "MIT",
