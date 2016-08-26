@@ -11,18 +11,17 @@ export default class Tester {
     protected port: number;
     private expressInstance;
     expressPromise: any;
-    promise: any;
+    promise: {
+        [id: string]: Promise<void>;
+    };
     private finalResolveFunction;
-    private resolveFunction;
     private rejectFunction;
     private stepMapArray;
-    private messagesCallbackFunction;
     constructor(portToListenOn: number, addressToSendTo: string);
     startListening(): Promise<void>;
     stopListening(): Promise<void>;
     private checkResponse(realResponse, parsedResponse, res);
     private runNextStep(recipient);
-    private messageResponse(req, res);
     runScript(script: Script): Promise<void>;
 }
 export declare class Script {

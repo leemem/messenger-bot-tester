@@ -23,18 +23,17 @@ export default class Tester {
     protected port: number;
     private expressInstance: Server;
     public expressPromise;
-    public promise;
-    private finalResolveFunction;
-    private resolveFunction;
-    private rejectFunction;
+    public promise: { [id: string] : Promise<void>; } = {};
+    private finalResolveFunction: { [id: string] : () => void; } = {};
+    private rejectFunction: { [id: string] : (err?: Error) => void; } = {};
     private stepMapArray: { [id: string] : Array<Message | Response>; } = {};
-    private messagesCallbackFunction = null;
 
     constructor(portToListenOn: number, addressToSendTo: string) {
         this.host = addressToSendTo;
         this.port = portToListenOn;
         this.expressApp = express();
         this.expressApp.use(bodyParser.json());
+        const _savedThis = this;
         this.expressApp.get('/v2.6/:id', (req: express.Request, res) => {
             // console.log('requesting', (<any>req.params).id);
             const user: sendTypes.FacebookUser = {
@@ -51,7 +50,30 @@ export default class Tester {
             // console.log('thread_settings');
             res.send({});
         })
-        this.expressApp.post('/v2.6/me/messages', this.messageResponse.bind(this));
+        this.expressApp.post('/v2.6/me/messages', (req: express.Request, res: express.Response) => {
+            //send api
+            const body = (<any>req).body as sendTypes.Payload;
+            const parsedResponse = checkSendAPI(body);
+            // console.log('response:', parsedResponse);
+
+            if (parsedResponse === null || parsedResponse.type === null) {
+                res.sendStatus(400);
+                // don't know who to respond to'
+                throw new Error('Bad response structure');
+            }
+
+            const token: string = req.query.access_token;
+            if (typeof token !== 'string') {
+                return _savedThis.rejectFunction[parsedResponse.recipient](new Error('Token must be included on all requests'));
+            }
+
+            if (parsedResponse.type === ResponseTypes.sender_action) {
+                res.sendStatus(200);
+                return;
+            }
+
+            _savedThis.checkResponse(body, parsedResponse, res);
+        });
         
         return this;
     }
@@ -78,33 +100,38 @@ export default class Tester {
             const _savedThis = this;
             this.stepMapArray[parsedResponse.recipient].shift();
             // console.log('checking the response...');
-            this.promise = this.promise.then(() => new Promise((resolve) => {
+            this.promise[parsedResponse.recipient] = this.promise[parsedResponse.recipient].then(() => new Promise((resolve) => {
                 // console.log(`create expect promise for ${(<any>currentStep).constructor.name}`);
-                _savedThis.resolveFunction = resolve;
                 // console.log('currentStep', currentStep);
 
                 // console.log('checking type..');
                 if (currentStep.type !== parsedResponse.type) {
-                    return _savedThis.rejectFunction(new Error(`Script does not match response type, got '${ResponseTypes[parsedResponse.type]}' but expected '${ResponseTypes[currentStep.type]}'`));
+                    return _savedThis.rejectFunction[parsedResponse.recipient](new Error(`Script does not match response type, got '${ResponseTypes[parsedResponse.type]}' but expected '${ResponseTypes[currentStep.type]}'`));
                 }
                 
                 // console.log('checking contents..');
-                if (currentStep.check(realResponse)) {
-                    // console.log('PERFECT');
-                    res.sendStatus(200);
-                    return resolve();
+                try {
+                    if (currentStep.check(realResponse)) {
+                        // console.log('PERFECT');
+                        res.sendStatus(200);
+                        return resolve();
+                    }
+                } catch(err) {
+                    res.sendStatus(400);
+                    return _savedThis.rejectFunction[parsedResponse.recipient](err);
                 }
 
                 res.sendStatus(500);
-                return _savedThis.rejectFunction(new Error(`Script does not match response expected`));
+                return _savedThis.rejectFunction[parsedResponse.recipient](new Error(`Script does not match response expected`));
 
             }))
                 .then(() => {
                     // console.log('running next step...');
                     return _savedThis.runNextStep(parsedResponse.recipient)
-                });
+                })
+                .then(() => null);
         } else {
-            this.rejectFunction(new Error(`Script does not have a response, but received one`));
+            this.rejectFunction[parsedResponse.recipient](new Error(`Script does not have a response, but received one`));
             res.sendStatus(500);
         }
     }
@@ -117,10 +144,9 @@ export default class Tester {
 
             if (typeof nextStep === 'undefined') {
                 // console.log('end of array');
-                this.promise = this.promise.then(() => {
+                this.promise[recipient] = this.promise[recipient].then(() => {
                     // console.log('clear');
-                    _savedThis.messagesCallbackFunction = null;
-                    _savedThis.finalResolveFunction();
+                    _savedThis.finalResolveFunction[recipient]();
                 });
                 return null;
             }
@@ -133,13 +159,13 @@ export default class Tester {
                 break;
             } else if (nextStep instanceof Message) {
                 const localStep: Message = nextStep;
-                this.promise = this.promise.then(() => {
+                this.promise[recipient] = this.promise[recipient].then(() => {
                     // console.log('sending', (<any>localStep).constructor.name);
                     return localStep.send(this.host);
                 });
             } else {
                 // console.log(nextStep);
-                this.promise = this.promise.then(() => Promise.reject(new Error('corrupt script')));
+                this.promise[recipient] = this.promise[recipient].then(() => Promise.reject(new Error('corrupt script')));
             }
         } while (nextStep instanceof Message)
 
@@ -150,17 +176,6 @@ export default class Tester {
         return null;
     }
 
-    private messageResponse(req: express.Request, res: express.Response) {
-        const body = (<any>req).body;
-        // console.log(util.inspect(body, {depth:null}))
-
-        if (this.messagesCallbackFunction !== null) {
-            this.messagesCallbackFunction(req, res);
-        } else {
-            res.sendStatus(200);
-        }
-    }
-
     public runScript(script: Script): Promise<void> {
         let _savedThis: this = this;
         this.stepMapArray[script.userID] = _.clone(script.script);
@@ -169,42 +184,13 @@ export default class Tester {
             this.startListening();
         }
 
-        this.messagesCallbackFunction = (req: express.Request, res: express.Response) => {
-            //send api
-            const token: string = req.query.access_token;
-            if (typeof token !== 'string') {
-                return _savedThis.rejectFunction(new Error('Token must be included on all requests'));
-            }
-
-            const body = (<any>req).body as sendTypes.Payload;
-            const parsedResponse = checkSendAPI(body);
-            // console.log('response:', parsedResponse);
-
-            if (parsedResponse === null || parsedResponse.type === null) {
-                res.sendStatus(400);
-                return _savedThis.rejectFunction(new Error('Bad response structure'));
-            }
-
-            if (parsedResponse.type === ResponseTypes.sender_action) {
-                res.sendStatus(200);
-                return;
-            }
-
-            _savedThis.checkResponse(body, parsedResponse, res);
-        };
-
         return this.expressPromise
             .then(() => new Promise((resolve, reject) => {
-                _savedThis.promise = Promise.resolve()
-                    .catch((err) => {
-                        // console.log('err in script run', err);
-                    });
-                _savedThis.finalResolveFunction = resolve;
-                _savedThis.rejectFunction = reject;
+                _savedThis.promise[script.userID] = Promise.resolve();
+                _savedThis.finalResolveFunction[script.userID] = resolve;
+                _savedThis.rejectFunction[script.userID] = reject;
                 _savedThis.runNextStep(script.userID);
-            })).finally(() => {
-                // console.log('script done');
-            })        
+            }));     
     }
 }
 

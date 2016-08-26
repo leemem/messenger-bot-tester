@@ -19,7 +19,11 @@ export class TextResponse extends Response {
     public type: ResponseTypes = ResponseTypes.text;
 
     check(payload:sendTypes.Payload): boolean {
-        return super.check(payload) && _.includes(this.allowedPhrases, payload.message.text);
+      const textCheck: boolean = this.allowedPhrases.length === 0 ? true : _.includes(this.allowedPhrases, payload.message.text);
+      if (textCheck === false) {
+        throw new Error(`Text mismatch expected '${this.allowedPhrases}', but got '${payload.message.text}'`);
+      }
+      return super.check(payload) && textCheck;
     }
 }
 
@@ -33,7 +37,11 @@ export class ImageResponse extends Response {
 
     check(payload:sendTypes.Payload): boolean {
       const attachment = payload.message.attachment.payload as sendTypes.URLPayload;
-      return super.check(payload) && this.url === attachment.url;
+      const urlCheck: boolean = this.url === attachment.url;
+      if (urlCheck === false) {
+        throw new Error(`URL mismatch expected '${this.url}', but got '${attachment.url}'`);
+      }
+      return super.check(payload) && urlCheck;
     }
 }
 
@@ -68,6 +76,9 @@ export class QuickRepliesResponse extends TextResponse {
 
     check(payload:sendTypes.Payload): boolean {
         const buttonsMatch = _.intersectionWith(this.buttons, payload.message.quick_replies, _.isEqual).length >= this.buttons.length;
+        if (buttonsMatch === false) {
+          throw new Error(`button content doesn't match`);
+        }
         return super.check(payload) && buttonsMatch;
     }
 }
@@ -85,7 +96,13 @@ export class ButtonTemplateResponse extends Response {
     check(payload:sendTypes.Payload): boolean {
         const attachment = payload.message.attachment.payload as sendTypes.ButtonPayload;
         const textMatches = _.includes(this.allowedText, attachment.text);
+        if (textMatches === false) {
+          throw new Error(`text doesn't match expected '${this.allowedText}' but recieved '${attachment.text}'`);
+        }
         const buttonsMatch = _.intersectionWith(this.buttons, attachment.buttons, _.isEqual).length >= this.buttons.length;
+        if (buttonsMatch === false) {
+          throw new Error(`button doesn't match`);
+        }
         return super.check(payload) && textMatches && buttonsMatch;
     }
 }
@@ -105,6 +122,9 @@ export class GenericTemplateResponse extends Response {
     check(payload:sendTypes.Payload): boolean {
         const attachment = payload.message.attachment.payload as sendTypes.GenericPayload;
         const elementCount = this._elementCount === -1 ? true : this._elementCount === attachment.elements.length;
+        if (elementCount === false) {
+          throw new Error(`element's have different count expected ${this._elementCount} but received ${attachment.elements.length}`);
+        }
         return super.check(payload) && elementCount;
     }
 }
@@ -124,6 +144,9 @@ export class ReceiptTemplateResponse extends Response {
     check(payload:sendTypes.Payload): boolean {
         const attachment = payload.message.attachment.payload as sendTypes.ReceiptPayload;
         const elementCount = this._elementCount === -1 ? true : this._elementCount === attachment.elements.length;
+        if (elementCount === false) {
+          throw new Error(`element's have different count expected ${this._elementCount} but received ${attachment.elements.length}`);
+        }
         return super.check(payload) && elementCount;
     }
 }
