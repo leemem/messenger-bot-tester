@@ -4,7 +4,9 @@
   "description": "Test your messenger bot",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "rm -rf ./test-build && tsc && tsc --project test",
+    "test": "mocha ./test-build",
+    "posttest": "rm -rf ./test-build"
   },
   "typings": "lib/index",
   "author": "Adam Juhasz",
@@ -17,5 +19,9 @@
     "facebook-send-api": "^2.5.0",
     "lodash": "^4.15.0",
     "request-promise": "^4.1.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.0.2"
   }
 }

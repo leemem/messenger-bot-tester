@@ -4,15 +4,16 @@
         "target": "es5",
         "noImplicitAny": false,
         "sourceMap": false,
-        "outDir": "lib",
-        "declaration": true
+        "outDir": "../test-build",
+        "declaration": false
     },
     "exclude": [
         "node_modules"
     ],
     "files": [
-      "typings/index.d.ts",
-      "index.ts",
-      "api-check.d.ts"
+      "../typings/index.d.ts",
+      "../api-check.d.ts",
+      "shapes.ts",
+      "responses.ts"
     ]
 }

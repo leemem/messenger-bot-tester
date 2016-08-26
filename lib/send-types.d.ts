@@ -15,6 +15,10 @@ export interface Item {
     image_url?: string;
     buttons?: Array<Button>;
 }
+export interface Adjustment {
+    name?: string;
+    amount?: number;
+}
 export interface TextMessage {
     text: string;
 }
@@ -27,9 +31,37 @@ export interface ButtonPayload {
     text: string;
     buttons: Array<Button>;
 }
+export interface URLPayload {
+    url: string;
+}
+export interface ReceiptPayload {
+    template_type: string;
+    recipient_name: string;
+    order_number: string;
+    currency: string;
+    payment_method: string;
+    timestamp?: number;
+    order_url?: string;
+    elements: Array<Item>;
+    address?: {
+        street_1: string;
+        street_2?: string;
+        city: string;
+        postal_code: string;
+        state: string;
+        country: string;
+    };
+    summary: {
+        subtotal?: number;
+        shipping_cost?: number;
+        total_tax?: number;
+        total_cost: number;
+    };
+    adjustments?: Array<Adjustment>;
+}
 export interface Attachement {
     type: string;
-    payload: GenericPayload | ButtonPayload;
+    payload: GenericPayload | ButtonPayload | URLPayload;
 }
 export interface Message {
     attachment?: Attachement;
