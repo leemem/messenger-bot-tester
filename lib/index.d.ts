@@ -35,7 +35,9 @@ export declare class Script {
     sendDelay(delayMs: number): this;
     sendPostbackMessage(payload: string): this;
     expectRawResponse(responseInstance: Response): this;
+    expectTextResponse(text: string): this;
     expectTextResponses(text: Array<string>): this;
     expectQuickRepliesResponse(text?: Array<string>, buttonArray?: Array<sendTypes.Button>): this;
     expectButtonTemplateResponse(text?: Array<string>, buttonArray?: Array<sendTypes.Button>): this;
+    expectGenericTemplateResponse(): this;
 }

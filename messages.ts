@@ -65,6 +65,30 @@ export class TextMessage extends Message {
     }
 }
 
+export class QuickReplyMessage extends Message {
+    protected payload: types.QuickReplyMessage;
+    public create(text: string, payload: string): this {
+        this.payload = {
+            sender: {
+                id: this.sender,
+            },
+            recipient: {
+                id: this.recipient,
+            },
+            timestamp: (new Date).getTime(),
+            message: {
+                mid: `mid.${0}`,
+                seq: this.seq,
+                text: text,
+                quick_reply: {
+                    payload: payload,
+                },
+            },
+        };
+        return this; 
+    }
+}
+
 export class DelayMessage extends Message {
     protected delay: number = 0;
     public create(delayMs: number): this {

@@ -238,6 +238,10 @@ export class Script {
         this.script.push(responseInstance);
         return this;
     }
+    
+    public expectTextResponse(text: string): this {
+        return this.expectRawResponse(new TextResponse([text]));
+    }
 
     public expectTextResponses(text: Array<string>): this {
         return this.expectRawResponse(new TextResponse(text));
@@ -249,5 +253,9 @@ export class Script {
 
     public expectButtonTemplateResponse(text: Array<string> = [], buttonArray: Array<sendTypes.Button> = []): this {
         return this.expectRawResponse(new ButtonTemplateResponse(text, buttonArray));
+    }
+
+    public expectGenericTemplateResponse(): this {
+        return this.expectRawResponse(new GenericTemplateResponse());
     }
 }

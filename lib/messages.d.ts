@@ -13,6 +13,10 @@ export declare class TextMessage extends Message {
     protected payload: types.TextMessage;
     create(text: string): this;
 }
+export declare class QuickReplyMessage extends Message {
+    protected payload: types.QuickReplyMessage;
+    create(text: string, payload: string): this;
+}
 export declare class DelayMessage extends Message {
     protected delay: number;
     create(delayMs: number): this;
