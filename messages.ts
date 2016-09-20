@@ -109,7 +109,7 @@ export class PostbackMessage extends Message {
                 id: this.sender,
             },
             recipient: {
-                id: this.sender,
+                id: this.recipient,
             },
             timestamp: (new Date).getTime(),
             postback: {
