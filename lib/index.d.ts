@@ -1,10 +1,15 @@
+/// <reference types="express" />
+/// <reference types="bluebird" />
+/// <reference types="es6-shim" />
 import * as express from 'express';
 import * as Promise from 'bluebird';
+import { checkSendAPI } from './checker';
 import { Response } from './responses';
 import { Message } from './messages';
 import * as sendTypes from './send-types';
 export * from './responses';
 export * from './messages';
+export { checkSendAPI };
 export default class Tester {
     protected expressApp: express.Application;
     protected host: string;

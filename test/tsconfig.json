@@ -11,7 +11,6 @@
         "node_modules"
     ],
     "files": [
-      "../typings/index.d.ts",
       "../api-check.d.ts",
       "shapes.ts",
       "responses.ts"

@@ -1,18 +1,30 @@
 {
   "name": "messenger-bot-tester",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Test your messenger bot",
   "main": "lib/index.js",
   "scripts": {
     "pretest": "rm -rf ./test-build && tsc && tsc --project test",
     "test": "mocha ./test-build",
-    "posttest": "rm -rf ./test-build"
+    "posttest": "rm -rf ./test-build",
+    "build": "tsc",
+    "prepublish": "npm run build && npm test"
   },
   "repository": "fyndme/messenger-bot-tester",
   "typings": "lib/index",
   "author": "Adam Juhasz",
   "license": "MIT",
   "dependencies": {
+    "@types/bluebird": "^3.0.35",
+    "@types/body-parser": "0.0.33",
+    "@types/chai": "^3.4.34",
+    "@types/es6-shim": "^0.31.32",
+    "@types/express": "^4.0.33",
+    "@types/lodash": "^4.14.37",
+    "@types/mocha": "^2.2.32",
+    "@types/node": "^6.0.45",
+    "@types/request": "0.0.31",
+    "@types/request-promise": "^3.0.32",
     "api-check": "^7.5.5",
     "bluebird": "^3.4.1",
     "body-parser": "^1.15.2",

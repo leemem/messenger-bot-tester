@@ -14,6 +14,7 @@ import * as sendTypes from './send-types';
 
 export * from './responses';
 export * from './messages';
+export { checkSendAPI };
 
 import { Server } from 'http';
 

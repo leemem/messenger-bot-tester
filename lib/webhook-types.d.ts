@@ -1,3 +1,4 @@
+/// <reference types="es6-shim" />
 export interface AttachmentObject {
     type: string;
     payload: string;

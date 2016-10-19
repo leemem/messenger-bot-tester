@@ -1,3 +1,4 @@
+/// <reference types="es6-shim" />
 import { ResponseTypes } from './checker';
 import * as sendTypes from './send-types';
 export declare class Response {

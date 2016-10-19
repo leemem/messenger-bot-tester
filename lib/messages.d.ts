@@ -1,3 +1,4 @@
+/// <reference types="bluebird" />
 import * as Promise from 'bluebird';
 import * as types from './webhook-types';
 export declare class Message {
