@@ -201,6 +201,20 @@ function checkButtonTemplate(payload: any): CheckResult | FailedCheckResult  {
 
   const result = checker(payload);
   if (typeof result === 'undefined') {
+    if (payload.message.attachment.payload.text === '') {
+      return {
+        type: ResponseTypes.button_template,
+        state: false,
+        error: new Error('Template titles can\'t be empty'),
+      };
+    }
+    if (payload.message.attachment.payload.buttons.length === 0) {
+      return {
+        type: ResponseTypes.button_template,
+        state: false,
+        error: new Error('Button array can\'t be empty'),
+      };
+    }
     for(let i=0; i < payload.message.attachment.payload.buttons.length; i++) {
       if (payload.message.attachment.payload.buttons[0].title === '') {
         return {

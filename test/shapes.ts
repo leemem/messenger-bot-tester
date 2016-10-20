@@ -58,7 +58,7 @@ describe('shapes', function(){
 });
 
 describe('bad-shapes', function() {
-  it('no title', function() {
+  it('no button title', function() {
     const badButton = {
       "recipient":{
         "id":"USER_ID"
@@ -81,6 +81,57 @@ describe('bad-shapes', function() {
                 "payload":"USER_DEFINED_PAYLOAD"
               }
             ]
+          }
+        }
+      }
+    };
+    const result:CheckResult = checker.checkSendAPI(badButton);
+    expect(result).to.equal(null);
+  });
+
+  it('no template title', function() {
+    const badButton = {
+      "recipient":{
+        "id":"USER_ID"
+      },
+      "message":{
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"button",
+            "text":"",
+            "buttons":[
+              {
+                "type":"web_url",
+                "url":"https://petersapparel.parseapp.com",
+                "title":"button"
+              },
+              {
+                "type":"postback",
+                "title":"Start Chatting",
+                "payload":"USER_DEFINED_PAYLOAD"
+              }
+            ]
+          }
+        }
+      }
+    };
+    const result:CheckResult = checker.checkSendAPI(badButton);
+    expect(result).to.equal(null);
+  });
+
+  it('no buttons', function() {
+    const badButton = {
+      "recipient":{
+        "id":"USER_ID"
+      },
+      "message":{
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"button",
+            "text":"title",
+            "buttons":[]
           }
         }
       }
