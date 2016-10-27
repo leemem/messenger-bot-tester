@@ -118,11 +118,11 @@ export default class Tester {
                         return resolve();
                     }
                 } catch(err) {
-                    res.sendStatus(400);
+                    res.sendStatus(200);
                     return _savedThis.rejectFunction[parsedResponse.recipient](err);
                 }
 
-                res.sendStatus(500);
+                res.sendStatus(200);
                 return _savedThis.rejectFunction[parsedResponse.recipient](new Error(`Script does not match response expected`));
 
             }))
@@ -133,7 +133,7 @@ export default class Tester {
                 .then(() => null);
         } else {
             this.rejectFunction[parsedResponse.recipient](new Error(`Script does not have a response, but received one`));
-            res.sendStatus(500);
+            res.sendStatus(200);
         }
     }
 

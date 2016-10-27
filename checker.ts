@@ -44,8 +44,8 @@ export function checkSendAPI(payload: any): CheckResult  {
     return validChecks[0] as CheckResult;
   }
 
-  console.log(payload);
-  console.log(checks);
+  // console.log(payload);
+  // console.log(checks);
   return null;
 }
 
