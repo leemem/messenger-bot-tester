@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 
 import { checkSendAPI, ResponseTypes, CheckResult } from './checker';
 import { Response, TextResponse, GenericTemplateResponse, ButtonTemplateResponse, QuickRepliesResponse } from './responses';
-import { Message, TextMessage, DelayMessage, PostbackMessage } from './messages';
+import { Message, TextMessage, DelayMessage, PostbackMessage, PostbackMessageWithReferral } from './messages';
 
 import * as types from './webhook-types';
 import * as sendTypes from './send-types';
@@ -218,6 +218,11 @@ export class Script {
 
     public sendPostbackMessage(payload: string): this {
         this.script.push(new PostbackMessage(this.userID, this.pageID, this.seq++).create(payload));
+        return this;
+    }
+
+    public sendPostbackMessageWithReferral(payload: string, referral: string): this {
+        this.script.push(new PostbackMessageWithReferral(this.userID, this.pageID, this.seq++).create(payload, referral));
         return this;
     }
 

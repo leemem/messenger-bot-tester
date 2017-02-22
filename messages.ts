@@ -119,3 +119,27 @@ export class PostbackMessage extends Message {
         return this;
     }
 }
+
+export class PostbackMessageWithReferral extends Message {
+    protected payload: types.PostbackWithReferral;
+    public create(payload: string, referral: string): this {
+        this.payload = {
+            sender: {
+                id: this.sender,
+            },
+            recipient: {
+                id: this.recipient,
+            },
+            timestamp: (new Date).getTime(),
+            postback: {
+                payload: payload,
+                referral: {
+                    ref: referral,
+                    source: "SHORTLINK",
+                    type: "OPEN_THREAD",
+                }
+            },
+        };
+        return this;
+    }
+}
