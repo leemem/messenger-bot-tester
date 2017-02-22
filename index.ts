@@ -250,4 +250,8 @@ export class Script {
     public expectGenericTemplateResponse(): this {
         return this.expectRawResponse(new GenericTemplateResponse());
     }
+
+    public expectTemplateResponse(elementCount: number, elements: Object): this {
+        return this.expectRawResponse(new GenericTemplateResponse().elementCount(elementCount).elements(elements));
+    }
 }
