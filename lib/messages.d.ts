@@ -27,3 +27,7 @@ export declare class PostbackMessage extends Message {
     protected payload: types.Postback;
     create(payload: string): this;
 }
+export declare class PostbackMessageWithReferral extends Message {
+    protected payload: types.PostbackWithReferral;
+    create(payload: string, referral: string): this;
+}

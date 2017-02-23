@@ -1,6 +1,5 @@
 /// <reference types="express" />
 /// <reference types="bluebird" />
-/// <reference types="es6-shim" />
 import * as express from 'express';
 import * as Promise from 'bluebird';
 import { checkSendAPI } from './checker';
@@ -38,10 +37,12 @@ export declare class Script {
     sendTextMessage(text: string): this;
     sendDelay(delayMs: number): this;
     sendPostbackMessage(payload: string): this;
+    sendPostbackMessageWithReferral(payload: string, referral: string): this;
     expectRawResponse(responseInstance: Response): this;
     expectTextResponse(text: string): this;
     expectTextResponses(text: Array<string>): this;
     expectQuickRepliesResponse(text?: Array<string>, buttonArray?: Array<sendTypes.Button>): this;
     expectButtonTemplateResponse(text?: Array<string>, buttonArray?: Array<sendTypes.Button>): this;
     expectGenericTemplateResponse(): this;
+    expectTemplateResponse(elementCount: number, elements: Object): this;
 }

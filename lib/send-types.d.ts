@@ -1,4 +1,3 @@
-/// <reference types="es6-shim" />
 export interface QuickReply {
     content_type: string;
     title: string;

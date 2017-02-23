@@ -1,4 +1,3 @@
-/// <reference types="es6-shim" />
 import { ResponseTypes } from './checker';
 import * as sendTypes from './send-types';
 export declare class Response {
@@ -44,9 +43,11 @@ export declare class ButtonTemplateResponse extends Response {
 }
 export declare class GenericTemplateResponse extends Response {
     protected _elementCount: number;
+    protected _elements: Object;
     constructor();
     type: ResponseTypes;
     elementCount(equalTo: number): this;
+    elements(elem: Object): this;
     check(payload: sendTypes.Payload): boolean;
 }
 export declare class ReceiptTemplateResponse extends Response {

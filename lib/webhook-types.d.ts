@@ -1,4 +1,3 @@
-/// <reference types="es6-shim" />
 export interface AttachmentObject {
     type: string;
     payload: string;
@@ -35,6 +34,16 @@ export interface TextMessage extends Message {
 export interface Postback extends Message {
     postback: {
         payload: string;
+    };
+}
+export interface PostbackWithReferral extends Message {
+    postback: {
+        payload: string;
+        referral: {
+            ref: string;
+            source: string;
+            type: string;
+        };
     };
 }
 export interface Delivered {
