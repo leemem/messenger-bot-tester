@@ -42,6 +42,14 @@ describe('responses', function(){
     expect(response.type).to.equal(ResponseTypes.generic_template);
   });
 
+  it('template', function() {
+    const response = (new responses.GenericTemplateResponse())
+        .elementCount(generic.message.attachment.payload.elements.length)
+        .elements(generic.message.attachment.payload.elements);
+    expect(response.check(generic)).to.equal(true);
+    expect(response.type).to.equal(ResponseTypes.generic_template);
+  });
+
   it('button', function() {
     const response = (new responses.ButtonTemplateResponse(
       [ button.message.attachment.payload.text ], 

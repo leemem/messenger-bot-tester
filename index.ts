@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 
 import { checkSendAPI, ResponseTypes, CheckResult } from './checker';
 import { Response, TextResponse, GenericTemplateResponse, ButtonTemplateResponse, QuickRepliesResponse } from './responses';
-import { Message, TextMessage, DelayMessage, PostbackMessage } from './messages';
+import { Message, TextMessage, DelayMessage, PostbackMessage, PostbackMessageWithReferral } from './messages';
 
 import * as types from './webhook-types';
 import * as sendTypes from './send-types';
@@ -221,6 +221,11 @@ export class Script {
         return this;
     }
 
+    public sendPostbackMessageWithReferral(payload: string, referral: string): this {
+        this.script.push(new PostbackMessageWithReferral(this.userID, this.pageID, this.seq++).create(payload, referral));
+        return this;
+    }
+
     public expectRawResponse(responseInstance: Response): this {
         this.script.push(responseInstance);
         return this;
@@ -244,5 +249,9 @@ export class Script {
 
     public expectGenericTemplateResponse(): this {
         return this.expectRawResponse(new GenericTemplateResponse());
+    }
+
+    public expectTemplateResponse(elementCount: number, elements: Object): this {
+        return this.expectRawResponse(new GenericTemplateResponse().elementCount(elementCount).elements(elements));
     }
 }

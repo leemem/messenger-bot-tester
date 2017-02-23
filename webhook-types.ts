@@ -41,6 +41,17 @@ export interface Postback extends Message {
     };
 }
 
+export interface PostbackWithReferral extends Message {
+    postback: {
+        payload: string;
+        referral: {
+            ref: string,
+            source: string,
+            type: string,
+        }
+    };
+}
+
 export interface Delivered {
     sender: {
         id: string;

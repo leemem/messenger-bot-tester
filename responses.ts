@@ -109,6 +109,7 @@ export class ButtonTemplateResponse extends Response {
 
 export class GenericTemplateResponse extends Response {
     protected _elementCount: number = -1;
+    protected _elements: Object = null;
     constructor() {
         super();
     }
@@ -119,13 +120,25 @@ export class GenericTemplateResponse extends Response {
         return this;
     }
 
+    elements(elem: Object): this {
+        this._elements= elem;
+        return this;
+    }
+
     check(payload:sendTypes.Payload): boolean {
         const attachment = payload.message.attachment.payload as sendTypes.GenericPayload;
         const elementCount = this._elementCount === -1 ? true : this._elementCount === attachment.elements.length;
+        //Simply and fast way for comparing Object
+        //Works when you have simple JSON-style objects without methods and DOM nodes inside
+        //The ORDER of the properties IS IMPORTANT
+        var isElementsEquals = this._elements === null ? true : JSON.stringify(this._elements) === JSON.stringify(attachment.elements);
         if (elementCount === false) {
           throw new Error(`element's have different count expected ${this._elementCount} but received ${attachment.elements.length}`);
         }
-        return super.check(payload) && elementCount;
+        if (isElementsEquals === false) {
+            throw new Error(`element's are different expected ${JSON.stringify(this._elements)} but received ${JSON.stringify(attachment.elements)}`);
+        }
+        return super.check(payload) && elementCount && isElementsEquals;
     }
 }
 
