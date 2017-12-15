@@ -1,4 +1,5 @@
 export const sender_action = {
+  "messaging_type": "RESPONSE",
   "recipient":{
     "id":"USER_ID"
   },
@@ -6,6 +7,7 @@ export const sender_action = {
 };
 
 export const text = {
+  "messaging_type": "RESPONSE",
   "recipient":{
     "id":"USER_ID"
   },
@@ -15,6 +17,7 @@ export const text = {
 };
 
 export const image = {
+  "messaging_type": "RESPONSE",
   "recipient":{
     "id":"USER_ID"
   },
@@ -29,6 +32,7 @@ export const image = {
 };
 
 export const audio = {
+  "messaging_type": "RESPONSE",
   "recipient":{
     "id":"USER_ID"
   },
@@ -43,6 +47,7 @@ export const audio = {
 };
 
 export const video = {
+  "messaging_type": "RESPONSE",
   "recipient":{
     "id":"USER_ID"
   },
@@ -57,6 +62,7 @@ export const video = {
 };
 
 export const file = {
+  "messaging_type": "RESPONSE",
   "recipient":{
     "id":"USER_ID"
   },
@@ -71,6 +77,7 @@ export const file = {
 };
 
 export const generic = {
+  "messaging_type": "RESPONSE",
   "recipient":{
     "id":"USER_ID"
   },
@@ -104,6 +111,7 @@ export const generic = {
 };
 
 export const button = {
+  "messaging_type": "RESPONSE",
   "recipient":{
     "id":"USER_ID"
   },
@@ -131,6 +139,7 @@ export const button = {
 };
 
 export const receipt = {
+  "messaging_type": "RESPONSE",
   "recipient":{
     "id":"USER_ID"
   },
@@ -193,6 +202,7 @@ export const receipt = {
 };
 
 export const quickreplies = {
+  "messaging_type": "RESPONSE",
   "recipient":{
     "id":"USER_ID"
   },
