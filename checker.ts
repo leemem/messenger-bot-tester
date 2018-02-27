@@ -51,6 +51,7 @@ export function checkSendAPI(payload: any): CheckResult  {
 
 function checkTextMessage(payload: any): CheckResult | FailedCheckResult  {
   const checker = apiCheck.shape({
+    messaging_type: apiCheck.oneOf(['RESPONSE', 'UPDATE', 'MESSAGE_TAG', 'NON_PROMOTIONAL_SUBSCRIPTION']),
     recipient: apiCheck.shape({
       id: apiCheck.string,
     }).strict,
@@ -77,6 +78,7 @@ function checkTextMessage(payload: any): CheckResult | FailedCheckResult  {
 
 function checkSenderAction(payload: any): CheckResult | FailedCheckResult  {
    const checkeSA = apiCheck.shape({
+    messaging_type: apiCheck.oneOf(['RESPONSE', 'UPDATE', 'MESSAGE_TAG', 'NON_PROMOTIONAL_SUBSCRIPTION']),
     recipient: apiCheck.shape({
       id: apiCheck.string,
     }).strict,
@@ -100,6 +102,7 @@ function checkSenderAction(payload: any): CheckResult | FailedCheckResult  {
 
 function checkQuickReplies(payload: any): CheckResult | FailedCheckResult  {
  const checker = apiCheck.shape({
+    messaging_type: apiCheck.oneOf(['RESPONSE', 'UPDATE', 'MESSAGE_TAG', 'NON_PROMOTIONAL_SUBSCRIPTION']),
     recipient: apiCheck.shape({
       id: apiCheck.string,
     }).strict,
@@ -145,6 +148,7 @@ const buttonArray =
 
 function checkGenericTemplate(payload: any): CheckResult | FailedCheckResult  {
  const checker = apiCheck.shape({
+    messaging_type: apiCheck.oneOf(['RESPONSE', 'UPDATE', 'MESSAGE_TAG', 'NON_PROMOTIONAL_SUBSCRIPTION']),
     recipient: apiCheck.shape({
       id: apiCheck.string,
     }).strict,
@@ -183,6 +187,7 @@ function checkGenericTemplate(payload: any): CheckResult | FailedCheckResult  {
 
 function checkButtonTemplate(payload: any): CheckResult | FailedCheckResult  {
  const checker = apiCheck.shape({
+    messaging_type: apiCheck.oneOf(['RESPONSE', 'UPDATE', 'MESSAGE_TAG', 'NON_PROMOTIONAL_SUBSCRIPTION']),
     recipient: apiCheck.shape({
       id: apiCheck.string,
     }).strict,
@@ -240,6 +245,7 @@ function checkButtonTemplate(payload: any): CheckResult | FailedCheckResult  {
 
 function checkImage(payload: any): CheckResult | FailedCheckResult  {
  const checker = apiCheck.shape({
+    messaging_type: apiCheck.oneOf(['RESPONSE', 'UPDATE', 'MESSAGE_TAG', 'NON_PROMOTIONAL_SUBSCRIPTION']),
     recipient: apiCheck.shape({
       id: apiCheck.string,
     }).strict,
@@ -271,6 +277,7 @@ function checkImage(payload: any): CheckResult | FailedCheckResult  {
 
 function checkAudio(payload: any): CheckResult | FailedCheckResult  {
  const checker = apiCheck.shape({
+    messaging_type: apiCheck.oneOf(['RESPONSE', 'UPDATE', 'MESSAGE_TAG', 'NON_PROMOTIONAL_SUBSCRIPTION']),
     recipient: apiCheck.shape({
       id: apiCheck.string,
     }).strict,
@@ -302,6 +309,7 @@ function checkAudio(payload: any): CheckResult | FailedCheckResult  {
 
 function checkVideo(payload: any): CheckResult | FailedCheckResult  {
  const checker = apiCheck.shape({
+    messaging_type: apiCheck.oneOf(['RESPONSE', 'UPDATE', 'MESSAGE_TAG', 'NON_PROMOTIONAL_SUBSCRIPTION']),
     recipient: apiCheck.shape({
       id: apiCheck.string,
     }).strict,
@@ -333,6 +341,7 @@ function checkVideo(payload: any): CheckResult | FailedCheckResult  {
 
 function checkFile(payload: any): CheckResult | FailedCheckResult  {
  const checker = apiCheck.shape({
+    messaging_type: apiCheck.oneOf(['RESPONSE', 'UPDATE', 'MESSAGE_TAG', 'NON_PROMOTIONAL_SUBSCRIPTION']),
     recipient: apiCheck.shape({
       id: apiCheck.string,
     }).strict,
@@ -364,6 +373,7 @@ function checkFile(payload: any): CheckResult | FailedCheckResult  {
 
 function checkReceiptTemplate(payload: any): CheckResult | FailedCheckResult  {
  const checker = apiCheck.shape({
+    messaging_type: apiCheck.oneOf(['RESPONSE', 'UPDATE', 'MESSAGE_TAG', 'NON_PROMOTIONAL_SUBSCRIPTION']),
     recipient: apiCheck.shape({
       id: apiCheck.string,
     }).strict,
