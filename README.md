@@ -69,3 +69,6 @@ Scripts are broken down into messages and responses. Messages are sent from a si
 - Generic Template validates correct element count was sent
 - Receipt Template validates correct element count was sent
 - Custom, subclass `Response` and provide custom `check(payload)` that return `bool` if response is correct
+
+## Changelog
+- 2019-07-23 NLP support.
